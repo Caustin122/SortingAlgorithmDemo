@@ -1,16 +1,17 @@
 # Colby Austin
 # Sorting Algorithm demo
 #
-# I am still adding all of the algorithms
+#
 #######################################################################
 from tkinter import *
 from tkinter import ttk
 import random
+from multiprocessing import Process
 from bubbleSort import bubble_sort
 from quickSort import quick_sort
 from mergeSort import merge_sort
 from insertionSort import insertion_sort
-# from selectionSort import selection_sort
+from selectionSort import selection_sort
 # from heapSort import heap_sort
 # from shellSort import shell_sort
 # from combSort import comb_sort
@@ -66,8 +67,7 @@ def drawData(data, canvas, colorArray):
 
 
 def Generate():
-    global right_data
-    global left_data
+    global unsorted_data
 
     data = []
     try:
@@ -77,69 +77,75 @@ def Generate():
     for n in range(size):
         data.append(n+1)
     random.shuffle(data)
-    right_data = data
-    left_data = data
+    unsorted_data = data
     drawData(data, LeftSortingDemo, ['red' for x in range(len(data))])
     drawData(data, RightSortingDemo, ['red' for x in range(len(data))])
 
 def Start():
-    global right_data
-    global left_data
+    global unsorted_data
     speed = SpeedScale.get()
     canvas = [LeftSortingDemo, RightSortingDemo]
     sorting_alg = [Left_Sorting_alg.get(), Right_Sorting_alg.get()]
-    data_list = [left_data, right_data]
+    sorting_command = []
     for i in range(len(canvas)):
         if sorting_alg[i] == 'quick sort':
-            quick_sort(data_list[i], 0, len(data_list[i]) - 1, drawData, canvas[i], speed)
+           sorting_command.append("quick_sort(unsorted_data, 0, len(unsorted_data) - 1, drawData, canvas[i], speed)")
         elif sorting_alg[i] == 'bubble sort':
-            bubble_sort(data_list[i], drawData, canvas[i], speed)
+            sorting_command.append("bubble_sort(unsorted_data, drawData, canvas[i], speed)")
         elif sorting_alg[i] == 'merge sort':
-            merge_sort(data_list[i], drawData, canvas[i], speed)
+            merge_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'insertion sort':
-            insertion_sort(data_list[i], drawData, canvas[i], speed)
+            insertion_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'selection sort':
-            selection_sort(data_list[i], drawData, canvas[i], speed)
+            selection_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'heap sort':
-            heap_sort(data_list[i], drawData, canvas[i], speed)
+            heap_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'shell sort':
-            shell_sort(data_list[i], drawData, canvas[i], speed)
+            shell_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'comb sort':
-            comb_sort(data_list[i], drawData, canvas[i], speed)
+            comb_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'execution sort':
-            execution_sort(data_list[i], drawData, canvas[i], speed)
+            execution_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'counting sort':
-            counting_sort(data_list[i], drawData, canvas[i], speed)
+            counting_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'bucket sort':
-            bucket_sort(data_list[i], drawData, canvas[i], speed)
+            bucket_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'radix sort':
-            radix_sort(data_list[i], drawData, canvas[i], speed)
+            radix_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'block sort':
-            block_sort(data_list[i], drawData, canvas[i], speed)
+            block_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'exchange sort':
-            exchange_sort(data_list[i], drawData, canvas[i], speed)
+            exchange_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'tree sort':
-            tree_sort(data_list[i], drawData, canvas[i], speed)
+            tree_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'cycle sort':
-            cycle_sort(data_list[i], drawData, canvas[i], speed)
+            cycle_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'library sort':
-            library_sort(data_list[i], drawData, canvas[i], speed)
+            library_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'gnome sort':
-            gnome_sort(data_list[i], drawData, canvas[i], speed)
+            gnome_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'cocktail shaker sort':
-            cocktailshaker_sort(data_list[i], drawData, canvas[i], speed)
+            cocktailshaker_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'tournament sort':
-            tournament_sort(data_list[i], drawData, canvas[i], speed)
+            tournament_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'patience sort':
-            patience_sort(data_list[i], drawData, canvas[i], speed)
+            patience_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'shell sort':
-            shell_sort(data_list[i], drawData, canvas[i], speed)
+            shell_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'pancake sort':
-            pancake_sort(data_list[i], drawData, canvas[i], speed)
+            pancake_sort(unsorted_data, drawData, canvas[i], speed)
         elif sorting_alg[i] == 'bead sort':
-            bead_sort(data_list[i], drawData, canvas[i], speed)
+            bead_sort(unsorted_data, drawData, canvas[i], speed)
 
-        drawData(data_list[i], canvas[i], ['green' for x in range(len(data_list[i]))])
+    p1 = Process(target=setattr(sorting_command[0]))
+    p2 = Process(target=setattr(sorting_command[1]))
+    print(sorting_command)
+
+    p1.start()
+    p2.start()
+
+    p1.join()
+    p2.join()
 
 
 # Frame/base Layout
